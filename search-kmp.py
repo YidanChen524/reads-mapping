@@ -1,70 +1,45 @@
 import sys
-
-# FASTA parser
-refs = {}
-
-with open(sys.argv[1],'r') as f:
-    lst = f.readlines()
-
-for i in range(len(lst)):
-    if lst[i][0] == '>':
-        ref_name = lst[i][1:].strip('\n')
-        ref_val = ""
-        while i < len(lst) - 1 and lst[i+1][0] != '>':
-            ref_val += lst[i+1].strip('\n')
-            i += 1
-        refs[ref_name] = ref_val
+import utils
 
 
-# FASTQ parser
-reads = {}
+def search_kmp(refs, reads):
+    """
+    searches exact match of reads in refs using the kmp algorithm and prints the output in SAM format
+    based on the idea of border arrays.
+    If a mismatch happens, move the read to a position where we can skip matching the prefix
 
-with open(sys.argv[2], 'r') as f:
-    lst = f.readlines()
+    Args:
+         refs: a dict storing the names and content of sequences in the fasta file
+         reads: a dict storing the names and content of sequences in the fastq file
+    """
+    for read_key, read_val in reads.items():
+        for ref_key, ref_val in refs.items():
+            n = len(ref_val)
+            m = len(read_val)
+            # construct a border array for the read
+            ba = utils.border_array(read_val)
 
-for i in range(len(lst)):
-    if lst[i][0] == '@':
-        reads[lst[i][1:].strip('\n')] = lst[i+1].strip('\n')
-        i += 4
+            i = j = 0
+            while j < n:
+                # if a position matches, increment both indices
+                while i < m and j < n and ref_val[j] == read_val[i]:
+                    j += 1
+                    i += 1
+                # if reach the end of a read, print the match in SAM format
+                if i == m:
+                    utils.print_sam(QNAME=read_key, RNAME=ref_key, POS=j - m + 1,
+                                    CIGAR=f'{str(m)}M', SEQ=read_val, QUAL='~' * m)
+                # mismatch happens at the very first position of the read, move to next position in the ref
+                if i == 0:
+                    j += 1
+                # mismatch happens at position greater than 0, decrement i to the index of its longest border
+                else:
+                    i = ba[i - 1]
 
 
-# helper functions that construct border arrays
-def border_array(s):
-    ba = [0] * len(s)
-    for i in range(1, len(s)):
-        b = ba[i - 1]
-        while b > 0 and s[b] != s[i]:
-            b = ba[b - 1]
-        ba[i] = b + 1 if s[b] == s[i] else 0
-    return ba
-
-
-# maps
-for read_key, read_val in reads.items():
-    for ref_key, ref_val in refs.items():
-        n = len(ref_val)
-        m = len(read_val)
-        ba = border_array(read_val)
-
-        i = j = 0
-        while j < n:
-            while i < m and j < n and ref_val[j] == read_val[i]:
-                j += 1
-                i += 1
-            if i == m:
-                QNAME = read_key
-                FLAG = 0
-                RNAME = ref_key
-                POS = j - m + 1
-                MAPQ = 0
-                CIGAR = f'{str(m)}M'
-                RNEXT = '*'
-                PNEXT = 0
-                TLEN = 0
-                SEQ = read_val
-                QUAL = '~' * m
-                print(QNAME, FLAG, RNAME, POS, MAPQ, CIGAR, RNEXT, PNEXT, TLEN, SEQ, QUAL)
-            if i == 0:
-                j += 1
-            else:
-                i = ba[i-1]
+if __name__ == '__main__':
+    # read in the fasta and fastq files
+    refs = utils.parse_fa(sys.argv[1])
+    reads = utils.parse_fq(sys.argv[2])
+    # run the naive search algorithm and print the output in SAM format
+    search_kmp(refs, reads)
