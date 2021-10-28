@@ -1,5 +1,5 @@
 import sys
-import utils
+import helpers
 
 
 def search_naive(refs: dict[str, str], reads: dict[str, str]) -> None:
@@ -20,13 +20,13 @@ def search_naive(refs: dict[str, str], reads: dict[str, str]) -> None:
                     if read_val[i] != ref_val[j + i]:
                         break
                 else:
-                    utils.print_sam(QNAME=read_key, RNAME=ref_key, POS=j+1,
-                                    CIGAR=f'{str(m)}M', SEQ=read_val, QUAL='~'*m)
+                    helpers.print_sam(QNAME=read_key, RNAME=ref_key, POS=j + 1,
+                                      CIGAR=f'{str(m)}M', SEQ=read_val, QUAL='~'*m)
 
 
 if __name__ == '__main__':
     # read in the fasta and fastq files
-    refs = utils.parse_fa(sys.argv[1])
-    reads = utils.parse_fq(sys.argv[2])
+    refs = helpers.parse_fa(sys.argv[1])
+    reads = helpers.parse_fq(sys.argv[2])
     # run the naive search algorithm and print the output in SAM format
     search_naive(refs, reads)

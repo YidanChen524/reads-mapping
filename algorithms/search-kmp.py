@@ -1,5 +1,5 @@
 import sys
-import utils
+import helpers
 
 
 def search_kmp(refs, reads):
@@ -17,7 +17,7 @@ def search_kmp(refs, reads):
             n = len(ref_val)
             m = len(read_val)
             # construct a border array for the read
-            ba = utils.border_array(read_val)
+            ba = helpers.border_array(read_val)
 
             i = j = 0
             while j < n:
@@ -27,8 +27,8 @@ def search_kmp(refs, reads):
                     i += 1
                 # if reach the end of a read, print the match in SAM format
                 if i == m:
-                    utils.print_sam(QNAME=read_key, RNAME=ref_key, POS=j - m + 1,
-                                    CIGAR=f'{str(m)}M', SEQ=read_val, QUAL='~' * m)
+                    helpers.print_sam(QNAME=read_key, RNAME=ref_key, POS=j - m + 1,
+                                      CIGAR=f'{str(m)}M', SEQ=read_val, QUAL='~' * m)
                 # mismatch happens at the very first position of the read, move to next position in the ref
                 if i == 0:
                     j += 1
@@ -39,7 +39,7 @@ def search_kmp(refs, reads):
 
 if __name__ == '__main__':
     # read in the fasta and fastq files
-    refs = utils.parse_fa(sys.argv[1])
-    reads = utils.parse_fq(sys.argv[2])
+    refs = helpers.parse_fa(sys.argv[1])
+    reads = helpers.parse_fq(sys.argv[2])
     # run the naive search algorithm and print the output in SAM format
     search_kmp(refs, reads)
