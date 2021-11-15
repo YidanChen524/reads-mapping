@@ -78,6 +78,7 @@ class SuffixTree:
 
 
 if __name__ == "__main__":
-    st = SuffixTree("mississippi")
+    st = SuffixTree("hello")
     print(st)
-    print(st.find("ssippi"))
+
+    # print(st.find("ssippi"))

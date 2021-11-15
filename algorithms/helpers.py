@@ -64,7 +64,7 @@ def print_sam(QNAME: str = '', FLAG: int = 0, RNAME: str = '',
     SEQ = SEQ
     QUAL = QUAL
 
-    print(QNAME, FLAG, RNAME, POS, MAPQ, CIGAR, RNEXT, PNEXT, TLEN, SEQ, QUAL)
+    print(QNAME, FLAG, RNAME, POS, MAPQ, CIGAR, RNEXT, PNEXT, TLEN, SEQ, QUAL, sep='\t')
 
 
 def cigar():
