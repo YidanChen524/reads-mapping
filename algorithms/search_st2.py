@@ -3,7 +3,7 @@ import sys
 import helpers
 from classes.suffix_tree import SuffixTree
 from classes.suffix_tree_from_lcp import SuffixTreeFromLCP
-from gen_lcp import traverse
+from gen_lcp import traverse, write_to_file
 
 
 def search_st2(refs, reads):
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # if option -p is present, generate a file containing sa and lcp
     if "-p" in opts:
         fname = args[0] + ".lcp"
-        gen_lcp.write_to_file(refs, fname)
+        write_to_file(refs, fname)
     # if both fa and fq files present, run the search algorithm
     if len(args) == 2:
         reads = helpers.parse_fq(args[1])

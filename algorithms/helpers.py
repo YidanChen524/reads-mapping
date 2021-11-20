@@ -95,3 +95,10 @@ def border_array(x: str) -> list[int]:
         # update the value respectively
         ba[i] = b + 1 if x[b] == x[i] else 0
     return ba
+
+
+def suffix_array(x: str) -> list[int]:
+    """return the suffix array of string x"""
+    x = x + "$"
+    sa = sorted(range(len(x)), key=lambda k: x[k:])
+    return sa
