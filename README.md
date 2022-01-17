@@ -1,7 +1,7 @@
 # Readmappers
 Programs that search patterns in sequences, map short reads to reference sequences
 
-## Algorithms
+## Exact Matching
 
 ### search one pattern at a time
 - Naive algorithm (search_naive.py)
@@ -13,4 +13,8 @@ Programs that search patterns in sequences, map short reads to reference sequenc
   - constructed from suffix array and lcp array (search_st2.py)
 - Suffix array
   - Binary search (search_bs.py)
-  - Burrow-wheeler algorithm (search_bw.py)
+  - Burrows-Wheelers algorithm (search_bw.py)
+  
+## Approximative Matching
+
+- Suffix tree

@@ -83,7 +83,7 @@ def border_array(x: str) -> list[int]:
         an integer list which is the border array of x
     """
     ba = [0] * len(x)
-    # starts from position 1, see if we can find ba[i] by tryinG to extend the longest border of i-1
+    # starts from position 1, see if we can find ba[i] by trying to extend the longest border of i-1
     for i in range(1, len(x)):
         b = ba[i - 1]
         while b > 0 and x[b] != x[i]:

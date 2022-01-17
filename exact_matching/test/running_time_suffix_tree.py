@@ -1,9 +1,9 @@
 import time
 import matplotlib.pyplot as plt
-from algorithms.classes.suffix_tree import SuffixTree
-from algorithms.classes.suffix_tree_from_lcp import SuffixTreeFromLCP
+from exact_matching.classes.suffix_tree import SuffixTree
+from exact_matching.classes.suffix_tree_from_lcp import SuffixTreeFromLCP
 from importlib import import_module
-from algorithms.gen_lcp import traverse
+from exact_matching.gen_lcp import traverse
 
 # worst case running time for construct suffix tree from lcp
 n = []

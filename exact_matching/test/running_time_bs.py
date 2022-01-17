@@ -1,7 +1,7 @@
 import time
 import matplotlib.pyplot as plt
-from algorithms.helpers import suffix_array
-from algorithms.search_bs import search_bs
+from exact_matching.helpers import suffix_array
+from exact_matching.search_bs import search_bs
 import math
 
 # search-bs with worse case scenario
